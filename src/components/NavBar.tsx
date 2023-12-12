@@ -6,7 +6,7 @@ export default class NavBar extends Component {
       <>
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
-                <a className="navbar-brand" href="Navbar.tsx">Navbar</a>
+                <a className="navbar-brand" href="Navbar.tsx">News App </a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="NavBar.tsxnavbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
                 </button>
@@ -16,27 +16,10 @@ export default class NavBar extends Component {
                     <a className="nav-link active" aria-current="page" href="NavBar.tsx">Home</a>
                     </li>
                     <li className="nav-item">
-                    <a className="nav-link" href="NavBar.tsx">Link</a>
-                    </li>
-                    <li className="nav-item dropdown">
-                    <a className="nav-link dropdown-toggle" href="NavBar.tsx" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <ul className="dropdown-menu">
-                        <li><a className="dropdown-item" href="NavBar.tsx">Action</a></li>
-                        <li><a className="dropdown-item" href="NavBar.tsx">Another action</a></li>
-                        <li><hr className="dropdown-divider"/></li>
-                        <li><a className="dropdown-item" href="NavBar.tsx">Something else here</a></li>
-                    </ul>
-                    </li>
-                    <li className="nav-item">
-                    <a className="nav-link disabled" aria-disabled="true" href='NavBar.tsx'>Disabled</a>
+                    <a className="nav-link" href="NavBar.tsx">About</a>
                     </li>
                 </ul>
-                <form className="d-flex" role="search">
-                    <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                    <button className="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                
                 </div>
             </div>
         </nav>
