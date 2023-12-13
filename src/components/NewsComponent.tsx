@@ -10,8 +10,6 @@ export default class NewsComponent extends Component {
         <NewsItemComponent/>
         <NewsItemComponent/>
         <NewsItemComponent/>
-        
-
       </div>
     )
   }
