@@ -23,6 +23,7 @@ interface Article {
   }
 export default class NewsComponent extends Component<{},State> {
      articles = [];
+     totalPages = 0;
       constructor(props:{}){
         super(props);
         this.state = {
@@ -34,19 +35,23 @@ export default class NewsComponent extends Component<{},State> {
         this.nextClicked = this.nextClicked.bind(this);
       };
     async componentDidMount(){
-        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=1487053d29f9460485bf80ee29944a1b&page=${this.state.pageNum}`;
+        
+        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=1487053d29f9460485bf80ee29944a1b&page=${this.state.pageNum}&pageSize=20`;
         let data = await fetch(url);
         let parsedData = await data.json();
         this.setState( {
             articles:parsedData.articles
         })
+        this.totalPages=Math.ceil((parsedData.totalResults/20))>=1?(parsedData.totalResults/20):1;
+        // console.log(Math.ceil(this.totalPages));
+      
     }
    async previousClicked() {
       if(this.state.pageNum > 1) {
         this.setState( (prevState)=>({
           pageNum: prevState.pageNum - 1
         }))
-        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=1487053d29f9460485bf80ee29944a1b&page=${this.state.pageNum-1}`;
+        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=1487053d29f9460485bf80ee29944a1b&page=${this.state.pageNum-1}&pageSize=20`;
         let data = await fetch(url);
         let parsedData = await data.json();
         this.setState( {
@@ -56,16 +61,18 @@ export default class NewsComponent extends Component<{},State> {
     }
 
     async nextClicked(){
-      this.setState( (prevState)=>({
-        pageNum: prevState.pageNum + 1
-      }))
-      let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=1487053d29f9460485bf80ee29944a1b&page=${this.state.pageNum+1}`;
-      let data = await fetch(url);
-      let parsedData = await data.json();
-    
-      this.setState( {
-        articles:parsedData.articles
-      })
+      if(this.totalPages > 1) {
+        this.setState( (prevState)=>({
+          pageNum: prevState.pageNum + 1
+        }))
+        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=1487053d29f9460485bf80ee29944a1b&page=${this.state.pageNum+1}`;
+        let data = await fetch(url);
+        let parsedData = await data.json();
+      
+        this.setState( {
+          articles:parsedData.articles
+        })
+      }
     }
 
   render() {
@@ -83,7 +90,7 @@ export default class NewsComponent extends Component<{},State> {
             </div>
             <div className=" paginationButton">
                 <button type="button" disabled={this.state.pageNum>1?false:true}  className="btn btn-dark mx-4"  onClick={() => this.previousClicked()}>Previous</button>
-                <button type="button"  className="btn btn-dark"  onClick={() => this.nextClicked()}>Next</button>
+                <button type="button" disabled={this.state.pageNum>=this.totalPages?true:false}  className="btn btn-dark"  onClick={() => this.nextClicked()}>Next</button>
             </div>
         </>
     )
