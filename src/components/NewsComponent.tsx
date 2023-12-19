@@ -19,7 +19,7 @@ interface Article {
   interface State {
     articles: Article[];
     loading: boolean;
-    pageNum: Number
+    pageNum:  number
   }
 export default class NewsComponent extends Component<{},State> {
      articles = [];
@@ -30,6 +30,8 @@ export default class NewsComponent extends Component<{},State> {
             loading:false,
             pageNum :1
         }
+        this.previousClicked = this.previousClicked.bind(this);
+        this.nextClicked = this.nextClicked.bind(this);
       };
     async componentDidMount(){
         let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=1487053d29f9460485bf80ee29944a1b&page=${this.state.pageNum}`;
@@ -39,20 +41,34 @@ export default class NewsComponent extends Component<{},State> {
             articles:parsedData.articles
         })
     }
-    previousClicked() {
-      this.setState( {
-        pageNum: this.state.pageNum
-      })
-      
+   async previousClicked() {
+      if(this.state.pageNum > 1) {
+        this.setState( (prevState)=>({
+          pageNum: prevState.pageNum - 1
+        }))
+        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=1487053d29f9460485bf80ee29944a1b&page=${this.state.pageNum-1}`;
+        let data = await fetch(url);
+        let parsedData = await data.json();
+        this.setState( {
+          articles:parsedData.articles
+        })
+      } 
     }
 
-    nextClicked(){
+    async nextClicked(){
+      this.setState( (prevState)=>({
+        pageNum: prevState.pageNum + 1
+      }))
+      let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=1487053d29f9460485bf80ee29944a1b&page=${this.state.pageNum+1}`;
+      let data = await fetch(url);
+      let parsedData = await data.json();
+    
       this.setState( {
-        pageNum: 2
+        articles:parsedData.articles
       })
     }
+
   render() {
-    
     
     return (
         <>
@@ -65,9 +81,9 @@ export default class NewsComponent extends Component<{},State> {
                     })
                 }   
             </div>
-            <div className="container">
-                <button type="button"  className="btn btn-dark mx-4" onClick={this.previousClicked}>Previous</button>
-                <button type="button"  className="btn btn-dark" onClick={this.nextClicked}>Next</button>
+            <div className=" paginationButton">
+                <button type="button" disabled={this.state.pageNum>1?false:true}  className="btn btn-dark mx-4"  onClick={() => this.previousClicked()}>Previous</button>
+                <button type="button"  className="btn btn-dark"  onClick={() => this.nextClicked()}>Next</button>
             </div>
         </>
     )
