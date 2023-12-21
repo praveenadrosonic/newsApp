@@ -1,0 +1,8 @@
+.pad-2{
+    padding:2rem;
+}
+
+.paginationButton {
+    display:flex;
+    justify-content: space-between;
+}
